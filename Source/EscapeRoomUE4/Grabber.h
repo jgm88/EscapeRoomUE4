@@ -24,10 +24,18 @@ public:
 	
 private:
 
+	/// Internal properties
 	FVector PlayerViewPointLocation;
 	FRotator PlayerViewPointRotation;
-
+	
 	UPROPERTY(EditAnywhere)
-	float TraceDistance = 100.f;
+	float TraceDistance = 100.f;	// Max distance to grab things
+
+	/// External properties
+	UPhysicsHandleComponent * PhysicsHandle = nullptr;
+	UInputComponent * InputComponent = nullptr;
+
+	/// Method to pull objects
+	void Grab();
 	
 };
