@@ -28,6 +28,6 @@ private:
 	FRotator PlayerViewPointRotation;
 
 	UPROPERTY(EditAnywhere)
-	FVector TraceDistance = FVector(0.f, 0.f, 400.f);
+	float TraceDistance = 100.f;
 	
 };
