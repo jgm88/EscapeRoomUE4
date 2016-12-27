@@ -33,9 +33,17 @@ private:
 
 	/// External properties
 	UPhysicsHandleComponent * PhysicsHandle = nullptr;
+	void FindPhysicsHandleComponent();
+
 	UInputComponent * InputComponent = nullptr;
+	void SetupInputComponent();
 
 	/// Method to pull objects
 	void Grab();
+
+	/// Method to release pulled objects
+	void Release();
 	
+	// Return hit for first physics body in reach
+	const FHitResult GetFirstPhysicsBodyInReach();
 };
