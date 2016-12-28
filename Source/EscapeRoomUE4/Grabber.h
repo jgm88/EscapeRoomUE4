@@ -30,7 +30,7 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	float TraceDistance = 100.f;	// Max distance to grab things
-	FVector CalculateLineTraceEnd();
+	void CalculateLineTraceEnd(FVector & LineTraceEnd);
 
 	/// External properties
 	UPhysicsHandleComponent * PhysicsHandle = nullptr;

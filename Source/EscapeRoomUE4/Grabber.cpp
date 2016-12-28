@@ -30,7 +30,10 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 	// LANE TRACE If the physics body is attached move the object we are holding
 	if (PhysicsHandle->GrabbedComponent)
 	{
-		PhysicsHandle->SetTargetLocation(CalculateLineTraceEnd());
+		FVector LineTraceEnd;
+		CalculateLineTraceEnd(LineTraceEnd);
+		PhysicsHandle->SetTargetLocation(LineTraceEnd);
+
 	}
 	
 }
@@ -41,12 +44,10 @@ void UGrabber::FindPhysicsHandleComponent()
 
 	// Check the if the PhysicsHandle is attached
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-	if (PhysicsHandle)
-	{
-	}
-	else
+	if (!PhysicsHandle)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s missing UPhysicsHandleComponent"), *ActorName);
+
 	}
 }
 
@@ -95,7 +96,7 @@ void UGrabber::Release()
 	PhysicsHandle->ReleaseComponent();
 }
 
-FVector UGrabber::CalculateLineTraceEnd()
+void UGrabber::CalculateLineTraceEnd(FVector & LineTraceEnd)
 {
 	// Get the player view
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
@@ -103,32 +104,27 @@ FVector UGrabber::CalculateLineTraceEnd()
 		PlayerViewPointRotation
 	);
 
-	/// Debug Trace
-	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * TraceDistance;
-
-	return LineTraceEnd;
+	LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * TraceDistance;
 }
 
 const FHitResult UGrabber::GetFirstPhysicsBodyInReach()
 {
-	// Get the player view
-	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
-		PlayerViewPointLocation,
-		PlayerViewPointRotation
-	);
 
-	/// Debug Trace
-	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * TraceDistance;
-	DrawDebugLine(
-		GetWorld(),
-		PlayerViewPointLocation,
-		LineTraceEnd,
-		FColor(255, 0, 0),
-		false, 0.f, 0.f, 10.f
-	);
+	FVector LineTraceEnd;
+	CalculateLineTraceEnd(LineTraceEnd);
+
+	///// Debug Trace
+	//DrawDebugLine(
+	//	GetWorld(),
+	//	PlayerViewPointLocation,
+	//	LineTraceEnd,
+	//	FColor(255, 0, 0),
+	//	false, 0.f, 0.f, 10.f
+	//);
 
 	/// Setup Query Params
 	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
+
 	// Ray-cast out to reach distance
 	FHitResult Hit;
 	GetWorld()->LineTraceSingleByObjectType(
