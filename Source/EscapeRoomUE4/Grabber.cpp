@@ -33,7 +33,6 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 		FVector LineTraceEnd;
 		CalculateLineTraceEnd(LineTraceEnd);
 		PhysicsHandle->SetTargetLocation(LineTraceEnd);
-
 	}
 	
 }
@@ -47,7 +46,6 @@ void UGrabber::FindPhysicsHandleComponent()
 	if (!PhysicsHandle)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s missing UPhysicsHandleComponent"), *ActorName);
-
 	}
 }
 
@@ -70,8 +68,6 @@ void UGrabber::SetupInputComponent()
 
 void UGrabber::Grab()
 {
-	UE_LOG(LogTemp, Warning, TEXT("EXECUTED GRAB"));
-
 	// LINE TRACE and see if we reach any actors with physics body collision channel set
 	FHitResult HitResult = GetFirstPhysicsBodyInReach();
 	UPrimitiveComponent * ComponentToGrab = HitResult.GetComponent();
@@ -80,7 +76,6 @@ void UGrabber::Grab()
 	// If we hit something then attached a physics handle
 	if(ActorHit != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Got Actor to GRAB"));
 		PhysicsHandle->GrabComponent(
 			ComponentToGrab,
 			NAME_None,
@@ -92,7 +87,6 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
-	UE_LOG(LogTemp, Warning, TEXT("RELEASE"));
 	PhysicsHandle->ReleaseComponent();
 }
 
