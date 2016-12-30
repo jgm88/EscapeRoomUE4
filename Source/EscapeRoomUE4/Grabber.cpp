@@ -27,6 +27,7 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
+	if (!PhysicsHandle) return;
 	// LANE TRACE If the physics body is attached move the object we are holding
 	if (PhysicsHandle->GrabbedComponent)
 	{
@@ -68,6 +69,8 @@ void UGrabber::SetupInputComponent()
 
 void UGrabber::Grab()
 {
+	if (!PhysicsHandle) return;
+
 	// LINE TRACE and see if we reach any actors with physics body collision channel set
 	FHitResult HitResult = GetFirstPhysicsBodyInReach();
 	UPrimitiveComponent * ComponentToGrab = HitResult.GetComponent();
@@ -87,6 +90,8 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
+	if (!PhysicsHandle) return;
+
 	PhysicsHandle->ReleaseComponent();
 }
 
